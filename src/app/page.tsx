@@ -1,91 +1,74 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { advocatesColumnDefs } from "./columnDefs";
+import { FilterModel } from "@/types/query";
+import { AgGridTable, SearchInput } from "./Components";
+import { Logo } from "./Logo";
+
+const advocatesColumns: string[] = advocatesColumnDefs.map((col) => col.field)
 
 export default function Home() {
-  const [advocates, setAdvocates] = useState([]);
-  const [filteredAdvocates, setFilteredAdvocates] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterModel, setFilterModel] = useState<FilterModel>({});
+
+  const handleChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    const searchTerm = e.target.value;
+    setSearchTerm(searchTerm);
+  }
+
+  const handleSearch = () => {    
+    if (searchTerm.trim()) {
+      const searchAllModel: FilterModel = advocatesColumns.reduce(
+        (acc, columnName) => {
+          acc[columnName] = {
+            type: "contains",
+            filter: searchTerm.trim(),
+          };
+          return acc;
+        },
+        {} as FilterModel
+      );
+
+      setFilterModel(searchAllModel);
+    }
+  };
+
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    setFilterModel({}); 
+  };
 
   useEffect(() => {
-    console.log("fetching advocates...");
-    fetch("/api/advocates").then((response) => {
-      response.json().then((jsonResponse) => {
-        setAdvocates(jsonResponse.data);
-        setFilteredAdvocates(jsonResponse.data);
-      });
-    });
-  }, []);
-
-  const onChange = (e) => {
-    const searchTerm = e.target.value;
-
-    document.getElementById("search-term").innerHTML = searchTerm;
-
-    console.log("filtering advocates...");
-    const filteredAdvocates = advocates.filter((advocate) => {
-      return (
-        advocate.firstName.includes(searchTerm) ||
-        advocate.lastName.includes(searchTerm) ||
-        advocate.city.includes(searchTerm) ||
-        advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.includes(searchTerm)
-      );
-    });
-
-    setFilteredAdvocates(filteredAdvocates);
-  };
-
-  const onClick = () => {
-    console.log(advocates);
-    setFilteredAdvocates(advocates);
-  };
+    if (!searchTerm.length) {
+      handleClearSearch();
+    }
+  }, [searchTerm])
 
   return (
-    <main style={{ margin: "24px" }}>
-      <h1>Solace Advocates</h1>
-      <br />
-      <br />
-      <div>
-        <p>Search</p>
-        <p>
-          Searching for: <span id="search-term"></span>
-        </p>
-        <input style={{ border: "1px solid black" }} onChange={onChange} />
-        <button onClick={onClick}>Reset Search</button>
+    <main className="m-6 space-y-6">      
+      <div className="flex items-center">
+        <Logo />
+        <span className="text-3xl font-bold"> Advocates</span>
       </div>
-      <br />
-      <br />
-      <table>
-        <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
-          <th>Specialties</th>
-          <th>Years of Experience</th>
-          <th>Phone Number</th>
-        </thead>
-        <tbody>
-          {filteredAdvocates.map((advocate) => {
-            return (
-              <tr>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((s) => (
-                    <div>{s}</div>
-                  ))}
-                </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 w-128">
+          <SearchInput
+            searchTerm={searchTerm}
+            onSearch={handleSearch}
+            onClear={handleClearSearch}
+            onChange={handleChangeSearch}
+          />
+        </div>
+      </div>
+      
+      <div className="flex-1 h-[900px]">
+        <AgGridTable
+          url="/api/advocates"
+          columnDefs={advocatesColumnDefs}
+          filterModel={filterModel}
+        />
+      </div>
     </main>
   );
 }
