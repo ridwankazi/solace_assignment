@@ -31,21 +31,21 @@ export default function Home() {
     const searchTerm = e.target.value;
 
     setSearchTerm(searchTerm);
+    debouncedSearch(searchTerm);
 
     console.log("filtering advocates...");
-    const filteredAdvocates = advocates.filter((advocate) => {
-      const searchTermLower = searchTerm.toLowerCase();
-      return (
-        advocate.firstName.toLowerCase().includes(searchTermLower) ||
-        advocate.lastName.toLowerCase().includes(searchTermLower) ||
-        advocate.city.toLowerCase().includes(searchTermLower) ||
-        advocate.degree.toLowerCase().includes(searchTermLower) ||
-        advocate.specialties.includes(searchTermLower) ||
-        advocate.yearsOfExperience.includes(searchTermLower)
-      );
-    });
+    // const filteredAdvocates = advocates.filter((advocate) => {
+    //   const searchTermLower = searchTerm.toLowerCase();
+    //   return (
+    //     advocate.firstName.toLowerCase().includes(searchTermLower) ||
+    //     advocate.lastName.toLowerCase().includes(searchTermLower) ||
+    //     advocate.city.toLowerCase().includes(searchTermLower) ||
+    //     advocate.degree.toLowerCase().includes(searchTermLower) ||
+    //     advocate.specialties.includes(searchTermLower)
+    //   );
+    // });
 
-    setFilteredAdvocates(filteredAdvocates);
+    // setFilteredAdvocates(filteredAdvocates);
   };
 
   const onClick = () => {
@@ -55,7 +55,14 @@ export default function Home() {
 
   const debouncedSearch = debounce((searchTerm: string) => {
     const filtered = advocates.filter((advocate) => {
-      // ... filtering logic
+      const searchTermLower = searchTerm.toLowerCase();
+      return (
+        advocate.firstName.toLowerCase().includes(searchTermLower) ||
+        advocate.lastName.toLowerCase().includes(searchTermLower) ||
+        advocate.city.toLowerCase().includes(searchTermLower) ||
+        advocate.degree.toLowerCase().includes(searchTermLower) ||
+        advocate.specialties.includes(searchTermLower)
+      );
     });
     setFilteredAdvocates(filtered);
   }, 300);
