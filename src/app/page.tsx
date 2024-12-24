@@ -59,22 +59,29 @@ export default function Home() {
   }, 300);
 
   return (
-    <main style={{ margin: "24px" }}>
-      <h1>Solace Advocates</h1>
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <h1 className="text-5xl font-extrabold text-[#0A3B3A] text-center mb-8 pb-4 border-b-2 border-[#0A3B3A] tracking-tight">
+        Solace Advocates
+      </h1>
       <br />
       <br />
-      <div>
-        <p>Search</p>
-        <p>
-          Searching for: <span>{searchTerm}</span>
+      <div className="flex flex-col gap-4 my-8">
+        <p className="text-lg font-semibold">Search</p>
+        <div className="flex gap-4">
+          <input
+            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            onChange={onChange}
+          />
+          <button
+            onClick={onClick}
+            className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Reset Search
+          </button>
+        </div>
+        <p className="text-sm text-gray-600">
+          Searching for: <span className="font-medium">{searchTerm}</span>
         </p>
-        <input style={{
-          border: "1px solid black",
-          padding: "4px 8px",     // Add padding
-          outline: "none",        // Remove default outline
-          cursor: "text"         // Show text cursor
-        }} onChange={onChange} />
-        <button onClick={onClick}>Reset Search</button>
       </div>
       <br />
       <br />
