@@ -34,18 +34,6 @@ export default function Home() {
     debouncedSearch(searchTerm);
 
     console.log("filtering advocates...");
-    // const filteredAdvocates = advocates.filter((advocate) => {
-    //   const searchTermLower = searchTerm.toLowerCase();
-    //   return (
-    //     advocate.firstName.toLowerCase().includes(searchTermLower) ||
-    //     advocate.lastName.toLowerCase().includes(searchTermLower) ||
-    //     advocate.city.toLowerCase().includes(searchTermLower) ||
-    //     advocate.degree.toLowerCase().includes(searchTermLower) ||
-    //     advocate.specialties.includes(searchTermLower)
-    //   );
-    // });
-
-    // setFilteredAdvocates(filteredAdvocates);
   };
 
   const onClick = () => {
@@ -56,12 +44,15 @@ export default function Home() {
   const debouncedSearch = debounce((searchTerm: string) => {
     const filtered = advocates.filter((advocate) => {
       const searchTermLower = searchTerm.toLowerCase();
+
       return (
         advocate.firstName.toLowerCase().includes(searchTermLower) ||
         advocate.lastName.toLowerCase().includes(searchTermLower) ||
         advocate.city.toLowerCase().includes(searchTermLower) ||
         advocate.degree.toLowerCase().includes(searchTermLower) ||
-        advocate.specialties.includes(searchTermLower)
+        advocate.specialties.some(specialty =>
+          specialty.toLowerCase().includes(searchTermLower)
+        )
       );
     });
     setFilteredAdvocates(filtered);
@@ -77,7 +68,12 @@ export default function Home() {
         <p>
           Searching for: <span>{searchTerm}</span>
         </p>
-        <input style={{ border: "1px solid black" }} onChange={onChange} />
+        <input style={{
+          border: "1px solid black",
+          padding: "4px 8px",     // Add padding
+          outline: "none",        // Remove default outline
+          cursor: "text"         // Show text cursor
+        }} onChange={onChange} />
         <button onClick={onClick}>Reset Search</button>
       </div>
       <br />
