@@ -49,39 +49,6 @@ export function AdvocatesTable({ advocates }: AdvocatesTableProps) {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  // return (
-  //   <table>
-  //     <thead>
-  //       <tr>
-  //         <th>First Name</th>
-  //         <th>Last Name</th>
-  //         <th>City</th>
-  //         <th>Degree</th>
-  //         <th>Specialties</th>
-  //         <th>Years of Experience</th>
-  //         <th>Phone Number</th>
-  //       </tr>
-  //     </thead>
-  //     <tbody>
-  //       {advocates.map((advocate) => (
-  //         <tr key={advocate.id}>
-  //           <td>{advocate.firstName}</td>
-  //           <td>{advocate.lastName}</td>
-  //           <td>{advocate.city}</td>
-  //           <td>{advocate.degree}</td>
-  //           <td>
-  //             {advocate.specialties.map((specialty) => (
-  //               <div key={specialty}>{specialty}</div>
-  //             ))}
-  //           </td>
-  //           <td>{advocate.yearsOfExperience}</td>
-  //           <td>{advocate.phoneNumber}</td>
-  //         </tr>
-  //       ))}
-  //     </tbody>
-  //   </table>
-  // );
-
   return (
     <table className="min-w-full divide-y divide-gray-200">
       <thead className="bg-gray-50">
