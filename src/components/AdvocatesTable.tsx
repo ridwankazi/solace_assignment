@@ -5,7 +5,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 interface AdvocatesTableProps {
   advocates: Advocate[];
