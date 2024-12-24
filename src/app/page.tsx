@@ -82,10 +82,9 @@ export default function Home() {
         <p className="text-sm text-gray-600">
           Searching for: <span className="font-medium">{searchTerm}</span>
         </p>
+        <br />
+        <AdvocatesTable advocates={filteredAdvocates} />
       </div>
-      <br />
-      <br />
-      <AdvocatesTable advocates={filteredAdvocates} />
     </main>
   );
 }
