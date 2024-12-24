@@ -54,7 +54,7 @@ export function AdvocatesTable({ advocates }: AdvocatesTableProps) {
               <div>
                 {specialties[0]}...
                 <span className="text-blue-500">
-                  (+{specialties.length - 1} more)
+                  ({specialties.length - 1} more)
                 </span>
               </div>
             )}
