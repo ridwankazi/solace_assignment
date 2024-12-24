@@ -31,7 +31,15 @@ export function AdvocatesTable({ advocates }: AdvocatesTableProps) {
     }),
     columnHelper.accessor('specialties', {
       header: 'Specialties',
-      cell: info => info.getValue(),
+      cell: info => (
+        <div className="flex flex-col">
+          {info.getValue().map((specialty: string) => (
+            <span key={specialty} className="py-1">
+              {specialty}
+            </span>
+          ))}
+        </div>
+      ),
     }),
     columnHelper.accessor('yearsOfExperience', {
       header: 'Years of Experience',

@@ -21,6 +21,7 @@ export default function Home() {
       const { data } = await response.json();
       setAdvocates(data);
       setFilteredAdvocates(data);
+      console.log(data);
     } catch (error) {
       console.error("Failed to fetch advocates:", error);
       // Handle error appropriately
