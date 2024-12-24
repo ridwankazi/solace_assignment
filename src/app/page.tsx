@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { debounce } from 'lodash';
 import { AdvocatesTable } from '@/components/AdvocatesTable';
 import { Advocate } from '@/types/advocate';
+import { fetchAdvocates } from '@/app/api_utils';
 
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
@@ -15,18 +16,16 @@ export default function Home() {
     fetchAdvocates();
   }, []);
 
-  const fetchAdvocates = async () => {
-    try {
-      const response = await fetch("/api/advocates");
-      const { data } = await response.json();
+
+  useEffect(() => {
+    const loadAdvocates = async () => {
+      const data = await fetchAdvocates();
       setAdvocates(data);
       setFilteredAdvocates(data);
-      console.log(data);
-    } catch (error) {
-      console.error("Failed to fetch advocates:", error);
-      // Handle error appropriately
-    }
-  };
+    };
+
+    loadAdvocates();
+  }, []);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchTerm = e.target.value;
