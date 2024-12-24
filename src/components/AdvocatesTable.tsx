@@ -5,6 +5,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table'
+import { useState } from 'react';
+
 interface AdvocatesTableProps {
   advocates: Advocate[];
 }
@@ -31,15 +33,34 @@ export function AdvocatesTable({ advocates }: AdvocatesTableProps) {
     }),
     columnHelper.accessor('specialties', {
       header: 'Specialties',
-      cell: info => (
-        <div className="flex flex-col">
-          {info.getValue().map((specialty: string) => (
-            <span key={specialty} className="py-1">
-              {specialty}
-            </span>
-          ))}
-        </div>
-      ),
+      cell: info => {
+        const [isExpanded, setIsExpanded] = useState(false);
+        const specialties = info.getValue();
+
+        return (
+          <div
+            className="cursor-pointer"
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? (
+              <div className="flex flex-col">
+                {specialties.map((specialty: string) => (
+                  <span key={specialty} className="py-1">
+                    {specialty}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <div>
+                {specialties[0]}...
+                <span className="text-blue-500">
+                  (+{specialties.length - 1} more)
+                </span>
+              </div>
+            )}
+          </div>
+        );
+      }
     }),
     columnHelper.accessor('yearsOfExperience', {
       header: 'Years of Experience',
